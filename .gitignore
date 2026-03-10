@@ -1,0 +1,22 @@
+# Markdown (managed manually for now; remove to track README.md etc.)
+*.md
+
+# Build / Angular
+dist/
+.angular/
+node_modules/
+/bin
+/obj
+
+# IDE / OS
+.idea/
+.vscode/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# Env / local
+.env
+.env.local
+*.local
