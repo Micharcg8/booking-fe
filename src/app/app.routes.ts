@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
         path: 'hold/:holdId',
         loadComponent: () =>
           import('./features/availability/hold-page.component').then((m) => m.HoldPageComponent),
+        canActivate: [authGuard],
       },
       {
         path: 'booking/:bookingId',
@@ -21,6 +23,12 @@ export const routes: Routes = [
           import('./features/booking/booking-status-page.component').then(
             (m) => m.BookingStatusPageComponent,
           ),
+        canActivate: [authGuard],
+      },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/auth/login-page.component').then((m) => m.LoginPageComponent),
       },
     ],
   },

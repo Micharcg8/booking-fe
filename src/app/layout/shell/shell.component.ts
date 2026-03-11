@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-shell',
@@ -11,6 +12,11 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
         <span class="brand">Booking</span>
         <nav>
           <a routerLink="/search" routerLinkActive="active">Search</a>
+          @if (auth.isAuthenticated()) {
+            <button type="button" class="link-btn" (click)="auth.logout()">Logout</button>
+          } @else {
+            <a routerLink="/login">Login</a>
+          }
         </nav>
       </header>
       <main class="main">
@@ -28,7 +34,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
       background: #1a1a2e; color: #eee;
     }
     .brand { font-weight: 700; font-size: 1.25rem; }
-    nav a { color: #aaa; text-decoration: none; margin-right: 1rem; }
+    nav a, nav .link-btn { color: #aaa; text-decoration: none; margin-right: 1rem; background: none; border: none; cursor: pointer; font: inherit; }
     nav a:hover, nav a.active { color: #fff; }
     .main { flex: 1; padding: 1.5rem; }
     .footer { padding: 0.75rem 1.5rem; background: #16213e; color: #888; font-size: 0.875rem; }
@@ -36,4 +42,5 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class ShellComponent {
   year = new Date().getFullYear();
+  constructor(public auth: AuthService) {}
 }
