@@ -1,0 +1,78 @@
+<h1>Search trips</h1>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="search-form">
+  <div class="form-row">
+    <label>
+      <span>Origin</span>
+      <input type="text" formControlName="origin" placeholder="e.g. MAD" />
+    </label>
+    <label>
+      <span>Destination</span>
+      <input type="text" formControlName="destination" placeholder="e.g. BCN" />
+    </label>
+  </div>
+  <div class="form-row">
+    <label>
+      <span>Date from</span>
+      <input type="date" formControlName="dateFrom" />
+    </label>
+    <label>
+      <span>Date to</span>
+      <input type="date" formControlName="dateTo" />
+    </label>
+  </div>
+  <div class="form-row">
+    <label>
+      <span>Passengers</span>
+      <input type="number" formControlName="passengers" min="1" />
+    </label>
+    <label>
+      <span>Max price</span>
+      <input type="number" formControlName="maxPrice" placeholder="Optional" step="0.01" />
+    </label>
+  </div>
+  <div class="form-row">
+    <label>
+      <span>Travel type</span>
+      <input type="text" formControlName="travelType" placeholder="e.g. Flight" />
+    </label>
+    <label>
+      <span>Provider</span>
+      <input type="text" formControlName="provider" placeholder="Optional" />
+    </label>
+  </div>
+  <button type="submit" [disabled]="loading">Search</button>
+</form>
+
+@if (loading) {
+  <p class="loading">Searching…</p>
+}
+
+@if (error) {
+  <p class="error">{{ error }}</p>
+}
+
+@if (searched && !loading && !error) {
+  <section class="results">
+    <h2>Results ({{ results.length }})</h2>
+    @if (results.length === 0) {
+      <p class="empty">No trips found. Try different filters.</p>
+    } @else {
+      <ul class="result-list">
+        @for (trip of results; track trip.id) {
+          <li class="result-item">
+            <span class="route">{{ trip.origin }} → {{ trip.destination }}</span>
+            <span class="date">{{ trip.departureDate }}</span>
+            <span class="price">{{ trip.price | number:'1.2-2' }} €</span>
+            @if (trip.travelType) {
+              <span class="meta">{{ trip.travelType }}</span>
+            }
+            @if (trip.provider) {
+              <span class="meta">{{ trip.provider }}</span>
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}
