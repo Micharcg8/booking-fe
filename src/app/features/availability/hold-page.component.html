@@ -13,6 +13,9 @@
       </div>
     } @else if (isActive()) {
       <p class="expiry-notice">Your hold is active. Complete your booking before it expires.</p>
+      <button type="button" class="btn primary" (click)="onCreateBooking()">
+        Continue to booking and pay
+      </button>
     }
 
     <a routerLink="/search" class="link-back">Back to search</a>

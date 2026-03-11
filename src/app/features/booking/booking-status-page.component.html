@@ -1,0 +1,26 @@
+@if (booking(); as b) {
+  <section class="booking-status">
+    <h1>Booking status</h1>
+    <p><strong>Booking ID:</strong> {{ b.bookingId }}</p>
+    <p><strong>Trip ID:</strong> {{ b.tripId }}</p>
+    <p><strong>Hold ID:</strong> {{ b.holdId }}</p>
+    <p><strong>Status:</strong> {{ b.status }}</p>
+    <p><strong>Payment:</strong> {{ b.paymentStatus }}</p>
+
+    @if (isPending()) {
+      <p class="pending">Your booking is pending payment confirmation…</p>
+    } @else if (isConfirmed()) {
+      <p class="confirmed">Your booking is confirmed. Check your email for details.</p>
+    } @else if (isCancelled()) {
+      <p class="cancelled">Payment failed or booking was cancelled. You can try again.</p>
+    }
+
+    <a routerLink="/search" class="link-back">Back to search</a>
+  </section>
+} @else if (error()) {
+  <p class="error">{{ error() }}</p>
+  <a routerLink="/search">Back to search</a>
+} @else {
+  <p class="loading">Loading booking…</p>
+}
+

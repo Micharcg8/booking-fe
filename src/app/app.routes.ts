@@ -15,6 +15,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/availability/hold-page.component').then((m) => m.HoldPageComponent),
       },
+      {
+        path: 'booking/:bookingId',
+        loadComponent: () =>
+          import('./features/booking/booking-status-page.component').then(
+            (m) => m.BookingStatusPageComponent,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

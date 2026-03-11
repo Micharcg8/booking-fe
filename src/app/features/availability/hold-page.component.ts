@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { interval, Subscription, switchMap, startWith } from 'rxjs';
 import { HoldService } from './hold.service';
 import { HoldDto, HoldStatus } from '../../models/hold.model';
+import { BookingService } from '../booking/booking.service';
 
 @Component({
   selector: 'app-hold-page',
@@ -31,7 +32,9 @@ export class HoldPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly holdService: HoldService
+    private readonly holdService: HoldService,
+    private readonly bookingService: BookingService,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -52,5 +55,35 @@ export class HoldPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+  }
+
+  onCreateBooking(): void {
+    const current = this.hold();
+    if (!current) {
+      return;
+    }
+
+    const request = {
+      tripId: current.tripId,
+      holdId: current.holdId,
+      customerName: 'Test User',
+      customerEmail: 'test@example.com',
+    };
+
+    this.bookingService.createBooking(request).subscribe({
+      next: async (created) => {
+        // fire payment initiation + success callback, then navigate to booking status
+        const payment = await this.bookingService
+          .initiatePayment({ bookingId: created.bookingId, amount: 100 })
+          .toPromise();
+        if (payment?.paymentId) {
+          await this.bookingService.simulateCallback(payment.paymentId, 'Succeeded').toPromise();
+        }
+        this.router.navigate(['/booking', created.bookingId]);
+      },
+      error: (err) => {
+        this.error.set(err?.message ?? 'Failed to create booking');
+      },
+    });
   }
 }
