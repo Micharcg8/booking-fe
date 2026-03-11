@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SearchService } from './search.service';
+import { HoldService } from '../availability/hold.service';
 import { TripOption, TripSearchParams } from '../../models/trip.model';
 
 @Component({
@@ -17,10 +19,13 @@ export class SearchPageComponent {
   loading = false;
   error: string | null = null;
   searched = false;
+  holdLoadingId: string | null = null;
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly searchService: SearchService
+    private readonly searchService: SearchService,
+    private readonly holdService: HoldService,
+    private readonly router: Router
   ) {
     this.form = this.fb.group({
       origin: [''],
@@ -60,6 +65,21 @@ export class SearchPageComponent {
         this.error = err?.message ?? 'Search failed';
         this.results = [];
         this.loading = false;
+      },
+    });
+  }
+
+  onHold(trip: TripOption): void {
+    const passengers = this.form.get('passengers')?.value ?? 1;
+    this.holdLoadingId = trip.id;
+    this.holdService.createHold({ tripId: trip.id, passengers }).subscribe({
+      next: (res) => {
+        this.holdLoadingId = null;
+        this.router.navigate(['/hold', res.holdId]);
+      },
+      error: (err) => {
+        this.holdLoadingId = null;
+        this.error = err?.message ?? 'Failed to create hold';
       },
     });
   }

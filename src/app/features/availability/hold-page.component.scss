@@ -1,0 +1,48 @@
+.hold-details {
+  max-width: 28rem;
+}
+
+.error {
+  color: #c00;
+  margin-bottom: 0.5rem;
+}
+
+.loading {
+  color: #666;
+  font-style: italic;
+}
+
+.expired-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #fff3cd;
+  border-radius: 4px;
+
+  .btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #1a1a2e;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+}
+
+.expiry-notice {
+  color: #0c5460;
+  background: #d1ecf1;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.expired {
+  color: #721c24;
+  font-weight: 600;
+}
+
+.link-back {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #0066cc;
+}

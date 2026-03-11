@@ -1,0 +1,25 @@
+@if (hold(); as h) {
+  <section class="hold-details">
+    <h1>Hold confirmed</h1>
+    <p><strong>Hold ID:</strong> {{ h.holdId }}</p>
+    <p><strong>Trip ID:</strong> {{ h.tripId }}</p>
+    <p><strong>Expires at:</strong> {{ expiresAtFormatted() }}</p>
+    <p><strong>Status:</strong> <span [class.expired]="isExpired()">{{ h.status }}</span></p>
+
+    @if (isExpired()) {
+      <div class="expired-message">
+        <p>This hold has expired. Please search again to create a new hold.</p>
+        <a routerLink="/search" class="btn">Search again</a>
+      </div>
+    } @else if (isActive()) {
+      <p class="expiry-notice">Your hold is active. Complete your booking before it expires.</p>
+    }
+
+    <a routerLink="/search" class="link-back">Back to search</a>
+  </section>
+} @else if (error()) {
+  <p class="error">{{ error() }}</p>
+  <a routerLink="/search">Back to search</a>
+} @else {
+  <p class="loading">Loading hold…</p>
+}

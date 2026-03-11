@@ -10,6 +10,11 @@ export const routes: Routes = [
         path: 'search',
         loadChildren: () => import('./features/search/search.routes').then((m) => m.searchRoutes),
       },
+      {
+        path: 'hold/:holdId',
+        loadComponent: () =>
+          import('./features/availability/hold-page.component').then((m) => m.HoldPageComponent),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

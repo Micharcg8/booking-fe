@@ -93,4 +93,19 @@ button[type="submit"] {
     font-size: 0.875rem;
     color: #666;
   }
+
+  .btn-hold {
+    padding: 0.4rem 0.75rem;
+    background: #0c5460;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
 }

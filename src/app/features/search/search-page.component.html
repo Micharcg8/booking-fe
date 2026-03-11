@@ -70,6 +70,18 @@
             @if (trip.provider) {
               <span class="meta">{{ trip.provider }}</span>
             }
+            <button
+              type="button"
+              class="btn-hold"
+              (click)="onHold(trip)"
+              [disabled]="holdLoadingId !== null"
+            >
+              @if (holdLoadingId === trip.id) {
+                Hold…
+              } @else {
+                Reserve
+              }
+            </button>
           </li>
         }
       </ul>
