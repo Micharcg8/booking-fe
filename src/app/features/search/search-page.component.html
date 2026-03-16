@@ -2,13 +2,51 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="search-form">
   <div class="form-row">
-    <label>
+    <label class="autocomplete-wrap">
       <span>Origin</span>
-      <input type="text" formControlName="origin" placeholder="e.g. MAD" />
+      <input
+        type="text"
+        formControlName="origin"
+        placeholder="e.g. Madrid o MAD"
+        (focus)="onOriginInput()"
+        (blur)="hideOriginDropdown()"
+        autocomplete="off"
+      />
+      @if (showOriginDropdown && originSuggestions.length) {
+        <ul class="suggestions" role="listbox">
+          @for (city of originSuggestions; track city.code) {
+            <li
+              role="option"
+              (mousedown)="selectOrigin(city); $event.preventDefault()"
+            >
+              {{ city.code }} — {{ city.name }}
+            </li>
+          }
+        </ul>
+      }
     </label>
-    <label>
+    <label class="autocomplete-wrap">
       <span>Destination</span>
-      <input type="text" formControlName="destination" placeholder="e.g. BCN" />
+      <input
+        type="text"
+        formControlName="destination"
+        placeholder="e.g. Barcelona o BCN"
+        (focus)="onDestinationInput()"
+        (blur)="hideDestinationDropdown()"
+        autocomplete="off"
+      />
+      @if (showDestinationDropdown && destinationSuggestions.length) {
+        <ul class="suggestions" role="listbox">
+          @for (city of destinationSuggestions; track city.code) {
+            <li
+              role="option"
+              (mousedown)="selectDestination(city); $event.preventDefault()"
+            >
+              {{ city.code }} — {{ city.name }}
+            </li>
+          }
+        </ul>
+      }
     </label>
   </div>
   <div class="form-row">
